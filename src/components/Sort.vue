@@ -50,7 +50,22 @@ function bubbleSort (arr) {
   return arr;
 }
 function quickSort (arr) {
-  return arr;
+  if (arr.length <= 1) {
+    return arr;
+  }
+  let pivotIndex = Math.floor(arr.length / 2);
+  let pivot = arr.splice(pivotIndex, 1)[0];
+  let left = [];
+  let right = [];
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] < pivot) {
+      left.push(arr[i]);
+    } else {
+      right.push(arr[i]);
+    }
+  }
+  // return [...quickSort(left), pivot, ...quickSort(right)]
+  return quickSort(left).concat([pivot], quickSort(right));
 }
 export default {
   name: 'HelloWorld',
@@ -82,11 +97,11 @@ export default {
           _fn: quickSort.toString()
         }
       ];
-      console.log(sortList[0]._fn)
+      console.log(sortList[1]._fn)
       for (const item of sortList) {
         console.time(item.name);
         let result = item.fn(arr);
-        let flag = result.toString() === _self.arr.toString() ? '通过' : '不通过';
+        let flag = result.toString() === arr.toString() ? '通过' : '不通过';
         console.timeEnd(item.name);
         _self.SortTime.push({
           name: item.name,
