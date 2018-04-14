@@ -53,11 +53,10 @@ function quickSort (arr) {
   if (arr.length <= 1) {
     return arr;
   }
-  let pivotIndex = Math.floor(arr.length / 2);
-  let pivot = arr.splice(pivotIndex, 1)[0];
+  let pivot = arr[0];
   let left = [];
   let right = [];
-  for (let i = 0; i < arr.length; i++) {
+  for (let i = 1; i < arr.length; i++) {
     if (arr[i] < pivot) {
       left.push(arr[i]);
     } else {
@@ -97,12 +96,9 @@ export default {
           _fn: quickSort.toString()
         }
       ];
-      console.log(sortList[1]._fn)
       for (const item of sortList) {
-        console.time(item.name);
         let result = item.fn(arr);
         let flag = result.toString() === arr.toString() ? '通过' : '不通过';
-        console.timeEnd(item.name);
         _self.SortTime.push({
           name: item.name,
           result: result.toString(),
