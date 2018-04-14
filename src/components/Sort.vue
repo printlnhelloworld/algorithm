@@ -97,8 +97,10 @@ export default {
         }
       ];
       for (const item of sortList) {
+        console.time(item.name);
         let result = item.fn(arr);
         let flag = result.toString() === arr.toString() ? '通过' : '不通过';
+        console.timeEnd(item.name);
         _self.SortTime.push({
           name: item.name,
           result: result.toString(),
