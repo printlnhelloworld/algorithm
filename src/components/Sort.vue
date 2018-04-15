@@ -73,7 +73,7 @@ function quickSort (arr) {
 }
 function selectSort (arr) {
   // let array = [...arr];
-  let array = arr.slice(0, arr.length);
+  let array = arr.slice(0);
   let length = array.length;
   for (let i = 0; i < length; i++) {
     let minIndex = i;
