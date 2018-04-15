@@ -88,6 +88,37 @@ function selectSort (arr) {
   }
   return array;
 }
+function mergingSort (arr) {
+  let array = arr.slice(0);
+  const merge = function (left, right) {
+    let result = [];
+    while (left.length || right.length) {
+      if (left.length && right.length) {
+        if (left[0] < right[0]) {
+          result.push(left.shift());
+        } else {
+          result.push(right.shift());
+        }
+      } else if (left.length) {
+        result = result.concat(left.splice(0, left.length));
+      } else {
+        result = result.concat(right.splice(0, right.length));
+      }
+    }
+    return result;
+  }
+  const sort = function (array) {
+    let length = array.length;
+    if (length === 1) {
+      return array;
+    }
+    let mid = Math.floor(length / 2);
+    let left = array.slice(0, mid);
+    let right = array.slice(mid, length);
+    return merge(sort(left), sort(right));
+  }
+  return sort(array);
+}
 export default {
   name: 'HelloWorld',
   data () {
@@ -124,6 +155,12 @@ export default {
           timeComplexity: 'O(n^2)',
           fn: selectSort,
           _fn: selectSort.toString()
+        },
+        {
+          name: '归并排序',
+          timeComplexity: 'O(nlogn)',
+          fn: mergingSort,
+          _fn: mergingSort.toString()
         }
       ];
       for (const item of sortList) {
