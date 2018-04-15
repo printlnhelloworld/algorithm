@@ -27,6 +27,11 @@
       </el-table-column>
       <el-table-column
         align="center"
+        prop="timeComplexity"
+        label="时间复杂度">
+      </el-table-column>
+      <el-table-column
+        align="center"
         prop="flag"
         label="是否通过">
       </el-table-column>
@@ -66,6 +71,23 @@ function quickSort (arr) {
   // return [...quickSort(left), pivot, ...quickSort(right)]
   return quickSort(left).concat([pivot], quickSort(right));
 }
+function selectSort (arr) {
+  // let array = [...arr];
+  let array = arr.slice(0, arr.length);
+  let length = array.length;
+  for (let i = 0; i < length; i++) {
+    let minIndex = i;
+    for (let j = i + 1; j < length; j++) {
+      if (array[j] < arr[minIndex]) {
+        minIndex = j;
+      }
+    }
+    let temp = array[i];
+    array[i] = array[minIndex];
+    array[minIndex] = temp;
+  }
+  return array;
+}
 export default {
   name: 'HelloWorld',
   data () {
@@ -87,13 +109,21 @@ export default {
       let sortList = [
         {
           name: '冒泡排序',
+          timeComplexity: 'O(n^2)',
           fn: bubbleSort,
           _fn: bubbleSort.toString()
         },
         {
           name: '快速排序',
+          timeComplexity: 'O(nlogn)',
           fn: quickSort,
           _fn: quickSort.toString()
+        },
+        {
+          name: '选择排序',
+          timeComplexity: 'O(n^2)',
+          fn: selectSort,
+          _fn: selectSort.toString()
         }
       ];
       for (const item of sortList) {
@@ -104,6 +134,7 @@ export default {
         _self.SortTime.push({
           name: item.name,
           result: result.toString(),
+          timeComplexity: item.timeComplexity,
           _fn: item._fn,
           flag: flag
         })
@@ -116,7 +147,8 @@ export default {
     }
   },
   mounted () {
-    document.title = 'Sort'
+    document.title = 'Sort';
+    this.sort();
   }
 }
 </script>
