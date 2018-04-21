@@ -3,6 +3,7 @@
     <div class="arr">
       <el-input v-model="line" placeholder="请输入数组"></el-input>
       <el-button type="primary" @click="sort">排序</el-button>
+      <el-button type="primary" @click="getRandomArray">随机数组</el-button>
     </div>
     <el-table
       :data="SortTime"
@@ -23,7 +24,8 @@
       <el-table-column
         align="center"
         prop="result"
-        label="排序结果">
+        label="排序结果"
+        width="600">
       </el-table-column>
       <el-table-column
         align="center"
@@ -34,6 +36,16 @@
         align="center"
         prop="flag"
         label="是否通过">
+      </el-table-column>
+      <el-table-column
+        align="center"
+        prop="flag"
+        label="排序">
+        <template slot-scope="props">
+          <el-button type="primary" @click="props.row.fn(arr)">
+            排序
+          </el-button>
+        </template>
       </el-table-column>
     </el-table>
   </div>
@@ -119,11 +131,26 @@ function mergingSort (arr) {
   }
   return sort(array);
 }
+function straightInsertionSort (arr) {
+  let array = arr.slice(0);
+  let length = array.length;
+  let preIndex, current;
+  for (let i = 1; i < length; i++) {
+    preIndex = i - 1;
+    current = array[i];
+    while (preIndex >= 0 && array[preIndex] > current) {
+      array[preIndex + 1] = array[preIndex];
+      preIndex--;
+    }
+    array[preIndex + 1] = current;
+  }
+  return array;
+}
 export default {
   name: 'HelloWorld',
   data () {
     return {
-      line: '1,3,5,6,12,7',
+      line: '',
       SortTime: [
         // {
         //   name: '冒泡排序',
@@ -161,6 +188,12 @@ export default {
           timeComplexity: 'O(nlogn)',
           fn: mergingSort,
           _fn: mergingSort.toString()
+        },
+        {
+          name: '直接插入排序',
+          timeComplexity: 'O(n^2)',
+          fn: straightInsertionSort,
+          _fn: straightInsertionSort.toString()
         }
       ];
       for (const item of sortList) {
@@ -172,10 +205,19 @@ export default {
           name: item.name,
           result: result.toString(),
           timeComplexity: item.timeComplexity,
+          fn: item.fn,
           _fn: item._fn,
           flag: flag
         })
       }
+    },
+    getRandomArray () {
+      let arr = [];
+      for (let i = 0; i < 10; i++) {
+        arr.push(i);
+      }
+      arr.sort(() => Math.random() > 0.5 ? -1 : 1);
+      this.line = arr.toString();
     }
   },
   computed: {
@@ -185,6 +227,7 @@ export default {
   },
   mounted () {
     document.title = 'Sort';
+    this.getRandomArray();
     this.sort();
   }
 }
